@@ -90,6 +90,11 @@ public class SpringJdbcTemplateApplication {
 		String itemId = scanner.nextLine();
 		ToDo item = jdbc.queryForObject("SELECT * FROM todo WHERE id = ?", new ToDoMapper(), itemId);
 
+		if (item == null) {
+			System.out.println("ToDo not found");
+			return;
+		}
+
 		System.out.println("1. ToDo - " + item.getTodo());
 		System.out.println("2. Note - " + item.getNote());
 		System.out.println("3. Finished - " + item.isFinished());
