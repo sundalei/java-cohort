@@ -1,0 +1,18 @@
+package com.wileyedge.dao.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.wileyedge.dao.MeetingDao;
+import com.wileyedge.entity.Meeting;
+
+@Repository
+public class MeetingDaoDB implements MeetingDao {
+
+    @Override
+    public List<Meeting> getAllMeetings() {
+        return null;
+    }
+    
+}
