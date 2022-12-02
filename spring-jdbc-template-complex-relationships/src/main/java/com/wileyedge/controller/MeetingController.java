@@ -113,6 +113,18 @@ public class MeetingController {
 				case 2: // Add Employee
 					addEmployee();
 					break;
+				case 3: // Update Employee
+					updateEmployee();
+					break;
+				case 4: // Delete Employee
+					deleteEmployee();
+					break;
+				case 5: // List Meetings for Employee
+					listMeetingsForEmployee();
+					break;
+				case 6:
+					addEmployeeToMeeting();
+					break;
 				case 7: // Return to Main Menu
 					view.returnToMainMenu();
 					return;
@@ -124,7 +136,7 @@ public class MeetingController {
 	private void listMeetings() {
 		view.listMeetingsBanner();
 		List<Meeting> meetings = meetingDao.getAllMeetings();
-		System.out.println("hello world");
+		view.displayMeetings(meetings);
 	}
 
 	private void listRooms() {
@@ -196,11 +208,72 @@ public class MeetingController {
 		view.addEmployeeBanner();
 		String firstName = view.getEmployeeFirstName();
 		String lastName = view.getEmployeeLastName();
-		
+
 		Employee employee = new Employee();
 		employee.setFirstName(firstName);
 		employee.setLastName(lastName);
 		employee = employeeDao.addEmployee(employee);
 		view.addEmployeeSuccess();
+	}
+
+	private void updateEmployee() {
+		view.updateEmployeeBanner();
+		int id = view.getEmployeeId();
+		Employee employee = employeeDao.getEmployeeById(id);
+		if (employee != null) {
+			view.displayUpdateInstructions();
+			String firstName = view.updateField("First Name", employee.getFirstName());
+			String lastName = view.updateField("Last Name", employee.getLastName());
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employeeDao.updateEmployee(employee);
+			view.updateEmployeeSuccess();
+		} else {
+			view.invalidEmployee();
+		}
+	}
+
+	private void deleteEmployee() {
+		view.deleteEmployeeBanner();
+		int id = view.getEmployeeId();
+		Employee employee = employeeDao.getEmployeeById(id);
+		if (employee != null) {
+			employeeDao.deleteEmployeeById(id);
+			view.deleteEmployeeSuccess();
+		} else {
+			view.invalidEmployee();
+		}
+	}
+
+	private void listMeetingsForEmployee() {
+		view.listMeetingsForEmployeeBanner();
+		int id = view.getEmployeeId();
+		Employee employee = employeeDao.getEmployeeById(id);
+		if (employee != null) {
+			view.displayEmployee(employee);
+			List<Meeting> meetings = meetingDao.getMeetingsForEmployee(employee);
+			view.displayMeetings(meetings);
+		} else {
+			view.invalidEmployee();
+		}
+	}
+
+	private void addEmployeeToMeeting() {
+		view.addEmployeeToMeetingBanner();
+		int id = view.getEmployeeId();
+		Employee employee = employeeDao.getEmployeeById(id);
+		if (employee != null) {
+			List<Meeting> meetings = meetingDao.getAllMeetings();
+			view.displayMeetings(meetings);
+			int meetingId = view.getMeetingIdToJoin();
+			Meeting meeting = meetingDao.getMeetingById(meetingId);
+			if (!meeting.getAttendees().contains(employee)) {
+				meeting.getAttendees().add(employee);
+				meetingDao.updateMeeting(meeting);
+			}
+			view.addEmployeeToMeetingSuccess();
+		} else {
+			view.invalidEmployee();
+		}
 	}
 }

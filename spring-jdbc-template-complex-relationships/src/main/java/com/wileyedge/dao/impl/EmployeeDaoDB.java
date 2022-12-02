@@ -67,6 +67,17 @@ public class EmployeeDaoDB implements EmployeeDao {
 
     @Override
     public void updateEmployee(Employee employee) {
+        final String UPDATE_EMPLOYEE = "UPDATE employee SET firstName = ?, lastName = ? WHERE id = ?";
+        jdbcTemplate.update(UPDATE_EMPLOYEE, employee.getFirstName(), employee.getLastName(), employee.getId());
+    }
+
+    @Override
+    @Transactional
+    public void deleteEmployeeById(int id) {
+        final String DELETE_MEETING_EMPLOYEE = "DELETE FROM meeting_employee WHERE employeeId = ?";
+        jdbcTemplate.update(DELETE_MEETING_EMPLOYEE, id);
         
+        final String DELETE_EMPLOYEE = "DELETE FROM employee WHERE id = ?";
+        jdbcTemplate.update(DELETE_EMPLOYEE, id);
     }
 }

@@ -21,7 +21,7 @@ public class MeetingView {
         io.print("ERROR: " + ex.getMessage());
         ex.printStackTrace();
     }
-    
+
     public void displayProgramBanner() {
         io.print("Meeting Manager");
     }
@@ -75,107 +75,107 @@ public class MeetingView {
     public void listRoomsBanner() {
         io.print("All Rooms");
     }
-    
+
     public void displayRooms(List<Room> rooms) {
-    	for (Room room : rooms) {
-    		StringBuilder builder = new StringBuilder();
-    		builder.append(room.getId());
-    		builder.append(" -- ");
-    		builder.append(room.getName());
-    		builder.append(" -- ");
-    		builder.append(room.getDescription());
-    		io.print(builder.toString());
-    	}
-    	io.print("");
+        for (Room room : rooms) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(room.getId());
+            builder.append(" -- ");
+            builder.append(room.getName());
+            builder.append(" -- ");
+            builder.append(room.getDescription());
+            io.print(builder.toString());
+        }
+        io.print("");
     }
-    
+
     public void addRoomBanner() {
-    	io.print("Adding Room");
+        io.print("Adding Room");
     }
-    
+
     public String getRoomName() {
-    	return io.readString("Enter room name: ");
+        return io.readString("Enter room name: ");
     }
-    
+
     public String getRoomDescription() {
-    	return io.readString("Enter room description");
+        return io.readString("Enter room description");
     }
-    
+
     public void addRoomSuccess() {
-    	io.print("Room added successfully");
+        io.print("Room added successfully");
     }
-    
+
     public void updateRoomBanner() {
-    	io.print("Updating Room");
+        io.print("Updating Room");
     }
-    
+
     public int getRoomId() {
-    	return io.readInt("Enter ID of room: ");
+        return io.readInt("Enter ID of room: ");
     }
-    
+
     public void displayUpdateInstructions() {
-    	io.print("Hit enter to keep original value.");
+        io.print("Hit enter to keep original value.");
     }
-    
+
     public String updateField(String fieldName, String original) {
-    	String update = io.readString("Update " + fieldName + " (" + original + ") ");
-    	if (update.trim().isEmpty()) {
-    		return original;
-    	}
-    	return update;
+        String update = io.readString("Update " + fieldName + " (" + original + ") ");
+        if (update.trim().isEmpty()) {
+            return original;
+        }
+        return update;
     }
-    
+
     public void updateRoomSuccess() {
-    	io.print("Room updated successfully");
+        io.print("Room updated successfully");
     }
-    
+
     public void invalidRoom() {
-    	io.print("No room with that ID");
+        io.print("No room with that ID");
     }
-    
+
     public void deleteRoomBanner() {
-    	io.print("Deleting Room");
+        io.print("Deleting Room");
     }
-    
+
     public void deleteRoomSuccess() {
-    	io.print("Room deleted successfully");
+        io.print("Room deleted successfully");
     }
-    
+
     public void listMeetingsForRoomBanner() {
-    	io.print("Listing meetings for room");
+        io.print("Listing meetings for room");
     }
-    
+
     public void displayRoom(Room room) {
-    	StringBuilder builder = new StringBuilder();
-		builder.append(room.getId());
-		builder.append(" -- ");
-		builder.append(room.getName());
-		builder.append(" -- ");
-		builder.append(room.getDescription());
-		io.print(builder.toString());
+        StringBuilder builder = new StringBuilder();
+        builder.append(room.getId());
+        builder.append(" -- ");
+        builder.append(room.getName());
+        builder.append(" -- ");
+        builder.append(room.getDescription());
+        io.print(builder.toString());
     }
-    
+
     public void displayMeetings(List<Meeting> meetings) {
-    	io.print("");
-    	for (Meeting meeting: meetings) {
-    		StringBuilder builder = new StringBuilder();
-    		builder.append(meeting.getId());
-    		builder.append(" -- ");
-    		builder.append(meeting.getName());
-    		builder.append(" -- ");
-    		builder.append(meeting.getTime());
-    		builder.append(" -- ");
-    		builder.append(meeting.getRoom().getName());
-    		builder.append(" -- ");
-    		builder.append("# of Attendees: ");
-    		builder.append(meeting.getAttendees().size());
-    		io.print(builder.toString());
-    	}
+        io.print("");
+        for (Meeting meeting : meetings) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(meeting.getId());
+            builder.append(" -- ");
+            builder.append(meeting.getName());
+            builder.append(" -- ");
+            builder.append(meeting.getTime());
+            builder.append(" -- ");
+            builder.append(meeting.getRoom().getName());
+            builder.append(" -- ");
+            builder.append("# of Attendees: ");
+            builder.append(meeting.getAttendees().size());
+            io.print(builder.toString());
+        }
     }
-    
+
     public void returnToMainMenu() {
-    	io.print("Returning to Main Menu");
-    	io.print("");
+        io.print("Returning to Main Menu");
+        io.print("");
     }
 
     public void displayEmployeesBanner() {
@@ -210,6 +210,16 @@ public class MeetingView {
         io.print("");
     }
 
+    public void displayEmployee(Employee employee) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(employee.getId());
+        builder.append(" -- ");
+        builder.append(employee.getFirstName());
+        builder.append(" -- ");
+        builder.append(employee.getLastName());
+        io.print(builder.toString());
+    }
+
     public void addEmployeeBanner() {
         io.print("Adding Employee");
     }
@@ -222,7 +232,47 @@ public class MeetingView {
         return io.readString("Enter employee last name: ");
     }
 
+    public int getEmployeeId() {
+        return io.readInt("Enter ID of employee: ");
+    }
+
     public void addEmployeeSuccess() {
         io.print("Employee added successfully");
+    }
+
+    public void updateEmployeeBanner() {
+        io.print("Updating Employee");
+    }
+
+    public void updateEmployeeSuccess() {
+        io.print("Employee updated successfully");
+    }
+
+    public void invalidEmployee() {
+        io.print("No employee with that ID.");
+    }
+
+    public void deleteEmployeeBanner() {
+        io.print("Deleting Employee");
+    }
+
+    public void deleteEmployeeSuccess() {
+        io.print("Employee deleted successfully");
+    }
+
+    public void listMeetingsForEmployeeBanner() {
+        io.print("Listing meetings for employee");
+    }
+
+    public void addEmployeeToMeetingBanner() {
+        io.print("Adding Employee to Meeting");
+    }
+
+    public int getMeetingIdToJoin() {
+        return io.readInt("Enter ID of meeting to add employee to: ");
+    }
+
+    public void addEmployeeToMeetingSuccess() {
+        io.print("Employee added to meeting");
     }
 }
