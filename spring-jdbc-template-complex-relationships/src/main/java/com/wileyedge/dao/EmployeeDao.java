@@ -7,4 +7,6 @@ import com.wileyedge.entity.Employee;
 public interface EmployeeDao {
     
     List<Employee> getAllEmployees();
+
+    Employee getEmployeeById(int id);
 }

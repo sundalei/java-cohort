@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.wileyedge.entity.Employee;
 import com.wileyedge.entity.Meeting;
 import com.wileyedge.entity.Room;
 
@@ -175,5 +176,28 @@ public class MeetingView {
     public void returnToMainMenu() {
     	io.print("Returning to Main Menu");
     	io.print("");
+    }
+
+    public void displayEmployeesBanner() {
+        io.print("");
+        io.print("Employee Menu");
+    }
+
+    public void displayEmployeesMenu() {
+        io.print("1. List Employees");
+        io.print("2. Add Employee");
+        io.print("3. Update Employee");
+        io.print("4. Delete Employee");
+        io.print("5. View Meetings for Employee");
+        io.print("6. Add Employee to Meeting");
+        io.print("7. Return to Main Menu");
+    }
+
+    public void listEmployeesBanner() {
+        io.print("All Employees");
+    }
+
+    public void listEmployees(List<Employee> employees) {
+        
     }
 }

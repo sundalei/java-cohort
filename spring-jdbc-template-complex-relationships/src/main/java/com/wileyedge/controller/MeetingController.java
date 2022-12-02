@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.wileyedge.dao.EmployeeDao;
 import com.wileyedge.dao.MeetingDao;
 import com.wileyedge.dao.RoomDao;
+import com.wileyedge.entity.Employee;
 import com.wileyedge.entity.Meeting;
 import com.wileyedge.entity.Room;
 import com.wileyedge.view.MeetingView;
@@ -34,18 +35,18 @@ public class MeetingController {
 
 			int choice = view.getMenuChoice(4);
 			switch (choice) {
-			case 1: // Meetings
-				handleMeetings();
-				break;
-			case 2: // Rooms
-				handleRooms();
-				break;
-			case 3: // Employees
-				// handleEmployees();
-				break;
-			case 4: // Exit
-				view.exit();
-				System.exit(0);
+				case 1: // Meetings
+					handleMeetings();
+					break;
+				case 2: // Rooms
+					handleRooms();
+					break;
+				case 3: // Employees
+					handleEmployees();
+					break;
+				case 4: // Exit
+					view.exit();
+					System.exit(0);
 			}
 		}
 	}
@@ -58,12 +59,12 @@ public class MeetingController {
 			int choice = view.getMenuChoice(5);
 
 			switch (choice) {
-			case 1: // List Meeting
-				listMeetings();
-				break;
-			case 5: // Return to Main Menu
-				// view.returnToMainMenu();
-				return;
+				case 1: // List Meeting
+					listMeetings();
+					break;
+				case 5: // Return to Main Menu
+					// view.returnToMainMenu();
+					return;
 			}
 		}
 	}
@@ -76,24 +77,43 @@ public class MeetingController {
 			int choice = view.getMenuChoice(6);
 
 			switch (choice) {
-			case 1: // List Room
-				listRooms();
-				break;
-			case 2: // Add Room
-				addRoom();
-				break;
-			case 3: // Update Room
-				updateRoom();
-				break;
-			case 4: // Delete Room
-				deleteRoom();
-				break;
-			case 5: // List Meetings for Room
-				listMeetingsForRoom();
-				break;
-			case 6: // Return to Main Menu
-				view.returnToMainMenu();
-				return;
+				case 1: // List Room
+					listRooms();
+					break;
+				case 2: // Add Room
+					addRoom();
+					break;
+				case 3: // Update Room
+					updateRoom();
+					break;
+				case 4: // Delete Room
+					deleteRoom();
+					break;
+				case 5: // List Meetings for Room
+					listMeetingsForRoom();
+					break;
+				case 6: // Return to Main Menu
+					view.returnToMainMenu();
+					return;
+			}
+		}
+	}
+
+	private void handleEmployees() {
+		while (true) {
+			view.displayEmployeesBanner();
+			view.displayEmployeesMenu();
+
+			int choice = view.getMenuChoice(7);
+
+			switch (choice) {
+				case 1: // List Employees
+					listEmployees();
+					break;
+				case 7: // Return to Main Menu
+					view.returnToMainMenu();
+					return;
+
 			}
 		}
 	}
@@ -109,7 +129,7 @@ public class MeetingController {
 		List<Room> rooms = roomDao.getAllRooms();
 		view.displayRooms(rooms);
 	}
-	
+
 	private void addRoom() {
 		view.addRoomBanner();
 		String name = view.getRoomName();
@@ -120,7 +140,7 @@ public class MeetingController {
 		room = roomDao.addRoom(room);
 		view.addRoomSuccess();
 	}
-	
+
 	private void updateRoom() {
 		view.updateRoomBanner();
 		int id = view.getRoomId();
@@ -137,7 +157,7 @@ public class MeetingController {
 			view.invalidRoom();
 		}
 	}
-	
+
 	private void deleteRoom() {
 		view.deleteRoomBanner();
 		int id = view.getRoomId();
@@ -149,7 +169,7 @@ public class MeetingController {
 			view.invalidRoom();
 		}
 	}
-	
+
 	private void listMeetingsForRoom() {
 		view.listMeetingsForRoomBanner();
 		int id = view.getRoomId();
@@ -161,5 +181,11 @@ public class MeetingController {
 		} else {
 			view.invalidRoom();
 		}
+	}
+
+	private void listEmployees() {
+		view.listEmployeesBanner();
+		List<Employee> employees = employeeDao.getAllEmployees();
+		view.listEmployees(employees);
 	}
 }

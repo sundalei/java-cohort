@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
@@ -37,5 +38,16 @@ public class EmployeeDaoDB implements EmployeeDao {
     public List<Employee> getAllEmployees() {
         final String SELECT_ALL_EMPLOYEES = "SELECT * FROM employee";
         return jdbcTemplate.query(SELECT_ALL_EMPLOYEES, new EmployeeMapper());
+    }
+
+    @Override
+    public Employee getEmployeeById(int id) {
+        try {
+
+            final String SELECT_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE id = ?";
+            return jdbcTemplate.queryForObject(SELECT_EMPLOYEE_BY_ID, new EmployeeMapper(), id);
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 }
