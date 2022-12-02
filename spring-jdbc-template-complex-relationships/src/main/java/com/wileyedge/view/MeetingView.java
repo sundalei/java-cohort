@@ -198,6 +198,31 @@ public class MeetingView {
     }
 
     public void listEmployees(List<Employee> employees) {
-        
+        for (Employee employee : employees) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(employee.getId());
+            builder.append(" -- ");
+            builder.append(employee.getFirstName());
+            builder.append(" -- ");
+            builder.append(employee.getLastName());
+            io.print(builder.toString());
+        }
+        io.print("");
+    }
+
+    public void addEmployeeBanner() {
+        io.print("Adding Employee");
+    }
+
+    public String getEmployeeFirstName() {
+        return io.readString("Enter employee first name: ");
+    }
+
+    public String getEmployeeLastName() {
+        return io.readString("Enter employee last name: ");
+    }
+
+    public void addEmployeeSuccess() {
+        io.print("Employee added successfully");
     }
 }

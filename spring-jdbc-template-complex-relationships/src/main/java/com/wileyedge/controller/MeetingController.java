@@ -110,6 +110,9 @@ public class MeetingController {
 				case 1: // List Employees
 					listEmployees();
 					break;
+				case 2: // Add Employee
+					addEmployee();
+					break;
 				case 7: // Return to Main Menu
 					view.returnToMainMenu();
 					return;
@@ -187,5 +190,17 @@ public class MeetingController {
 		view.listEmployeesBanner();
 		List<Employee> employees = employeeDao.getAllEmployees();
 		view.listEmployees(employees);
+	}
+
+	private void addEmployee() {
+		view.addEmployeeBanner();
+		String firstName = view.getEmployeeFirstName();
+		String lastName = view.getEmployeeLastName();
+		
+		Employee employee = new Employee();
+		employee.setFirstName(firstName);
+		employee.setLastName(lastName);
+		employee = employeeDao.addEmployee(employee);
+		view.addEmployeeSuccess();
 	}
 }
