@@ -1,5 +1,6 @@
 package com.wileyedge.view;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -169,13 +170,41 @@ public class MeetingView {
             builder.append(" -- ");
             builder.append("# of Attendees: ");
             builder.append(meeting.getAttendees().size());
+            builder.append(" -- ");
+            builder.append(meeting.getAttendees());
             io.print(builder.toString());
         }
+    }
+
+    public void addMeetingBanner() {
+        io.print("Adding Meeting");
+    }
+
+    public String getMeetingName() {
+        return io.readString("Enter meeting name: ");
+    }
+
+    public LocalDateTime getMeetingDateTime() {
+        int year = io.readInt("Enter meeting year: ");
+        int month = io.readInt("Enter meeting month: ");
+        int day = io.readInt("Enter meeting day: ");
+        int hour = io.readInt("Enter meeting hour (0-23): ");
+        int minute = io.readInt("Enter meeting minute: ");
+
+        return LocalDateTime.of(year, month, day, hour, minute);
+    }
+
+    public int getMeetingRoomId() {
+        return io.readInt("Enter room ID: ");
     }
 
     public void returnToMainMenu() {
         io.print("Returning to Main Menu");
         io.print("");
+    }
+
+    public void addMeetingSuccess() {
+        io.print("Meeting added successfully");
     }
 
     public void displayEmployeesBanner() {

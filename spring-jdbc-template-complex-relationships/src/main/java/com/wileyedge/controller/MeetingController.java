@@ -1,5 +1,6 @@
 package com.wileyedge.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -61,6 +62,9 @@ public class MeetingController {
 			switch (choice) {
 				case 1: // List Meeting
 					listMeetings();
+					break;
+				case 2: // Add Meeting
+					addMeeting();
 					break;
 				case 5: // Return to Main Menu
 					// view.returnToMainMenu();
@@ -137,6 +141,22 @@ public class MeetingController {
 		view.listMeetingsBanner();
 		List<Meeting> meetings = meetingDao.getAllMeetings();
 		view.displayMeetings(meetings);
+	}
+
+	private void addMeeting() {
+		view.addMeetingBanner();
+		String name = view.getMeetingName();
+		LocalDateTime time = view.getMeetingDateTime();
+		List<Room> rooms = roomDao.getAllRooms();
+		view.displayRooms(rooms);
+		int id = view.getMeetingRoomId();
+		Room room = roomDao.getRoomById(id);
+		Meeting meeting = new Meeting();
+		meeting.setName(name);
+		meeting.setRoom(room);
+		meeting.setTime(time);
+		meetingDao.addMeeting(meeting);
+		view.addMeetingSuccess();
 	}
 
 	private void listRooms() {
