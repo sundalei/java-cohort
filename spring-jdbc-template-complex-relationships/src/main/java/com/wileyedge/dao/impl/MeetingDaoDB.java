@@ -106,8 +106,15 @@ public class MeetingDaoDB implements MeetingDao {
 	}
 
 	@Override
+	@Transactional
 	public void updateMeeting(Meeting meeting) {
-		// TODO Auto-generated method stub
+		final String UPDATE_MEETING = "UPDATE meeting SET name = ?, time = ?, roomId = ? WHERE id = ?";
+		jdbcTemplate.update(UPDATE_MEETING, meeting.getName(), Timestamp.valueOf(meeting.getTime()),
+				meeting.getRoom().getId(), meeting.getId());
+
+		final String DELETE_MEETING_EMPLOYEE = "DELETE FROM meeting_employee WHERE meetingId = ?";
+		jdbcTemplate.update(DELETE_MEETING_EMPLOYEE, meeting.getId());
+		insertMeetingEmployee(meeting);
 
 	}
 
@@ -136,6 +143,15 @@ public class MeetingDaoDB implements MeetingDao {
 		for (Employee employee : meeting.getAttendees()) {
 			jdbcTemplate.update(INSERT_MEETING_EMPLOYEE, meeting.getId(), employee.getId());
 		}
+	}
+
+	@Override
+	public void deleteMeetingById(int id) {
+		final String DELETE_MEETING_EMPLOYEE = "DELETE FROM meeting_employee WHERE meetingId = ?";
+		jdbcTemplate.update(DELETE_MEETING_EMPLOYEE, id);
+
+		final String DELETE_MEETING = "DELETE FROM meeting WHERE id = ?";
+		jdbcTemplate.update(DELETE_MEETING, id);
 	}
 
 }

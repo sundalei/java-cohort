@@ -66,6 +66,12 @@ public class MeetingController {
 				case 2: // Add Meeting
 					addMeeting();
 					break;
+				case 3: // Update Meeting
+					updateMeeting();
+					break;
+				case 4: // Delete Meeting
+					deleteMeeting();
+					break;
 				case 5: // Return to Main Menu
 					// view.returnToMainMenu();
 					return;
@@ -157,6 +163,41 @@ public class MeetingController {
 		meeting.setTime(time);
 		meetingDao.addMeeting(meeting);
 		view.addMeetingSuccess();
+	}
+
+	private void updateMeeting() {
+		view.updateMeetingBanner();
+		int id = view.getMeetingId();
+		Meeting meeting = meetingDao.getMeetingById(id);
+		if (meeting != null) {
+			view.displayUpdateInstructions();
+			String name = view.updateField("Name", meeting.getName());
+			LocalDateTime dateTime = view.updateMeetingTime(meeting.getTime());
+			List<Room> rooms = roomDao.getAllRooms();
+			view.displayRooms(rooms);
+			int roomId = Integer.parseInt(view.updateField("Room ID", "" + meeting.getRoom().getId()));
+			Room room = roomDao.getRoomById(roomId);
+			meeting.setName(name);
+			meeting.setTime(dateTime);
+			meeting.setRoom(room);
+
+			meetingDao.updateMeeting(meeting);
+			view.updateMeetingSuccess();
+		} else {
+			view.invalidMeeting();
+		}
+	}
+
+	private void deleteMeeting() {
+		view.deleteMeetingBanner();
+		int id = view.getMeetingId();
+		Meeting meeting = meetingDao.getMeetingById(id);
+		if (meeting != null) {
+			meetingDao.deleteMeetingById(id);
+			view.deleteMeetingSuccess();
+		} else {
+			view.invalidMeeting();
+		}
 	}
 
 	private void listRooms() {

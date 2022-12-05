@@ -19,4 +19,6 @@ public interface MeetingDao {
     Meeting addMeeting(Meeting meeting);
 
     void updateMeeting(Meeting meeting);
+
+    void deleteMeetingById(int id);
 }

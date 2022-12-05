@@ -207,6 +207,56 @@ public class MeetingView {
         io.print("Meeting added successfully");
     }
 
+    public void updateMeetingBanner() {
+        io.print("Updating Meeting");
+    }
+
+    public int getMeetingId() {
+        return io.readInt("Enter ID of Meeting: ");
+    }
+
+    public void invalidMeeting() {
+        io.print("No meeting with that ID");
+    }
+
+    public void deleteMeetingBanner() {
+        io.print("Deleting Meeting");
+    }
+
+    public void deleteMeetingSuccess() {
+        io.print("Meeting deleted successfully");
+    }
+
+    public LocalDateTime updateMeetingTime(LocalDateTime time) {
+        String year = io.readString("Enter meeting year(" + time.getYear() + "): ");
+        String month = io.readString("Enter meeting month(" + time.getMonth().getValue() + "): ");
+        String day = io.readString("Enter meeting day(" + time.getDayOfMonth() + "): ");
+        String hour = io.readString("Enter meeting hour (0-23) (" + time.getHour() + "): ");
+        String minute = io.readString("Enter meeting minute(" + time.getMinute() + "): ");
+
+        if (!year.trim().isEmpty()) {
+            time = time.withYear(Integer.parseInt(year));
+        }
+        if (!month.trim().isEmpty()) {
+            time = time.withMonth(Integer.parseInt(month));
+        }
+        if (!day.trim().isEmpty()) {
+            time = time.withDayOfMonth(Integer.parseInt(day));
+        }
+        if (!hour.trim().isEmpty()) {
+            time = time.withHour(Integer.parseInt(hour));
+        }
+        if (!minute.trim().isEmpty()) {
+            time = time.withMinute(Integer.parseInt(minute));
+        }
+
+        return time;
+    }
+
+    public void updateMeetingSuccess() {
+        io.print("Meeting updated successfully");
+    }
+
     public void displayEmployeesBanner() {
         io.print("");
         io.print("Employee Menu");
