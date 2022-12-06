@@ -51,4 +51,12 @@ public class Meeting {
     public void setAttendees(List<Employee> attendees) {
         this.attendees = attendees;
     }
+
+    @Override
+    public String toString() {
+        return "Meeting{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

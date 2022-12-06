@@ -1,6 +1,7 @@
 package com.wileyedge.dao.impl;
 
 import com.wileyedge.entity.Room;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -42,8 +43,12 @@ public class RoomDaoDB implements RoomDao {
 
     @Override
     public Room getRoomById(int id) {
-        final String SELECT_ROOM_BY_ID = "SELECT * FROM room WHERE id = ?";
-        return jdbcTemplate.queryForObject(SELECT_ROOM_BY_ID, new RoomMapper(), id);
+        try {
+            final String SELECT_ROOM_BY_ID = "SELECT * FROM room WHERE id = ?";
+            return jdbcTemplate.queryForObject(SELECT_ROOM_BY_ID, new RoomMapper(), id);
+        } catch (DataAccessException ex) {
+            return null;
+        }
     }
 
     @Override
