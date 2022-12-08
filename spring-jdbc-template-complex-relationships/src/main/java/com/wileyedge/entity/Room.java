@@ -1,5 +1,7 @@
 package com.wileyedge.entity;
 
+import java.util.Objects;
+
 public class Room {
 
     private int id;
@@ -30,7 +32,20 @@ public class Room {
         this.description = description;
     }
 
-	@Override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return id == room.id && name.equals(room.name) && description.equals(room.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description);
+    }
+
+    @Override
 	public String toString() {
 		return "Room [id=" + id + ", name=" + name + ", description=" + description + "]";
 	}
