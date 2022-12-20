@@ -4,8 +4,8 @@ $(document).ready(function() {
 });
 
 function loadContacts() {
+    clearContactTable();
     var contentRows = $('#contentRows');
-    contentRows.clear();
 
     $.ajax({
         type: 'GET',
@@ -66,4 +66,8 @@ function addContact() {
             }
         });
     });
+}
+
+function clearContactTable() {
+    $('#contentRows').empty();
 }
