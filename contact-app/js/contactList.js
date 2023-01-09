@@ -1,6 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
     loadContacts();
     addContact();
+    updateContact();
 });
 
 function loadContacts() {
@@ -10,8 +11,8 @@ function loadContacts() {
     $.ajax({
         type: 'GET',
         url: 'http://contactlist.us-east-1.elasticbeanstalk.com/contacts',
-        success: function(contactArray) {
-            $.each(contactArray, function(index, contact) {
+        success: function (contactArray) {
+            $.each(contactArray, function (index, contact) {
                 var name = contact.firstName + ' ' + contact.lastName;
                 var company = contact.company;
                 var contactId = contact.contactId;
@@ -20,22 +21,28 @@ function loadContacts() {
                 row += '<td>' + name + '</td>';
                 row += '<td>' + company + '</td>';
                 row += '<td><button type="button" class="btn btn-info" onclick="showEditForm(' + contactId + ')">Edit</button></td>';
-                row += '<td><button type="button" class="btn btn-danger">Delete</button></td>';
+                row += '<td><button type="button" class="btn btn-danger" onclick="deleteContact(' + contactId + ')">Delete</button></td>';
                 row += '</tr>';
 
                 contentRows.append(row);
             });
         },
-        error: function() {
+        error: function () {
             $('#errorMessages').append($('<li>'))
-            .attr({class: 'list-group-item list-group-item-danger'})
-            .text('Error calling web service. Please try again later.');
+                .attr({ class: 'list-group-item list-group-item-danger' })
+                .text('Error calling web service. Please try again later.');
         }
     });
 }
 
 function addContact() {
-    $('#addButton').click(function(event) {
+    $('#addButton').click(function (event) {
+        var haveValidationErrors = checkAndDisplayValidationErrors($('#addForm').find('input'));
+
+        if (haveValidationErrors) {
+            return false;
+        }
+
         $.ajax({
             type: 'POST',
             url: 'http://contactlist.us-east-1.elasticbeanstalk.com/contact',
@@ -51,7 +58,7 @@ function addContact() {
                 'Content-Type': 'application/json'
             },
             'dataType': 'json',
-            success: function() {
+            success: function () {
                 $('#errorMessages').empty();
                 $('#addFirstName').val('');
                 $('#addLastName').val('');
@@ -60,10 +67,10 @@ function addContact() {
                 $('#addEmail').val('');
                 loadContacts();
             },
-            error: function() {
+            error: function () {
                 $('#errorMessages').append($('<li>'))
-                .attr({class: 'list-group-item list-group-item-danger'})
-                .text('Error calling web service. Please try again later.');
+                    .attr({ class: 'list-group-item list-group-item-danger' })
+                    .text('Error calling web service. Please try again later.');
             }
         });
     });
@@ -79,7 +86,7 @@ function showEditForm(contactId) {
     $.ajax({
         type: 'GET',
         url: 'http://contactlist.us-east-1.elasticbeanstalk.com/contact/' + contactId,
-        success: function(data, status) {
+        success: function (data, status) {
             $('#editFirstName').val(data.firstName);
             $('#editLastName').val(data.lastName);
             $('#editCompany').val(data.company);
@@ -87,9 +94,9 @@ function showEditForm(contactId) {
             $('#editEmail').val(data.email);
             $('#editContactId').val(data.contactId);
         },
-        error: function() {
+        error: function () {
             $('#errorMessages').append($('<li>'))
-                .attr({class: 'list-group-item list-group-item-danger'})
+                .attr({ class: 'list-group-item list-group-item-danger' })
                 .text('Error calling web service. Please try again later.');
         }
     });
@@ -109,4 +116,80 @@ function hideEditForm() {
 
     $('#contactTableDiv').show();
     $('#editFormDiv').hide();
+}
+
+function updateContact(contactId) {
+    $('#updateButton').click(function (event) {
+        var haveValidationErrors = checkAndDisplayValidationErrors($('#editForm').find('input'));
+        
+        if(haveValidationErrors) {
+            return false;
+        }
+
+        $.ajax({
+            type: 'PUT',
+            url: 'http://contactlist.us-east-1.elasticbeanstalk.com/contact/' + $('#editContactId').val(),
+            data: JSON.stringify({
+                contactId: $('#editContactId').val(),
+                firstName: $('#editFirstName').val(),
+                lastName: $('#editLastName').val(),
+                company: $('#editCompany').val(),
+                phone: $('#editPhone').val(),
+                email: $('#editEmail').val()
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            'dataType': 'json',
+            success: function () {
+                $('#errorMessage').empty();
+                hideEditForm();
+                loadContacts();
+            },
+            error: function () {
+                $('#errorMessages').append($('<li>'))
+                    .attr({ class: 'list-group-item list-group-item-danger' })
+                    .text('Error calling web service. Please try again later.');
+            }
+        });
+    });
+}
+
+function deleteContact(contactId) {
+    $.ajax({
+        type: 'DELETE',
+        url: 'http://contactlist.us-east-1.elasticbeanstalk.com/contact/' + contactId,
+        success: function () {
+            loadContacts();
+        }
+    });
+}
+
+function checkAndDisplayValidationErrors(input) {
+    // console.log(input);
+    $('#errorMessages').empty();
+
+    var errorMessages = [];
+
+    input.each(function () {
+        console.log(this.validity);
+        console.log(this.id);
+        console.log(this.validationMessage);
+        if (!this.validity.valid) {
+            var errorField = $('label[for=' + this.id + ']').text();
+            errorMessages.push(errorField + ' ' + this.validationMessage);
+        }
+    });
+
+    if (errorMessages.length > 0) {
+        $.each(errorMessages, function (index, message) {
+            $('#errorMessages').append($('<li>').attr({ class: 'list-group-item list-group-item-danger' }).text(message));
+        });
+        // return true, indicating that there were errors
+        return true;
+    } else {
+        // return false, indicating that there were no errors
+        return false;
+    }
 }
